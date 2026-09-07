@@ -1,0 +1,59 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Production build artifacts
+dist/
+build/
+
+# Environment local secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+backend/.env
+frontend/.env
+admin/.env
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.log
+
+# Terraform state and local caches
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+*.tfvars
+!*.tfvars.example
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
+# OS and Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local Automation & Internal Roadmaps
+scripts/
+*.ps1
+*.sh
+DEVOPS_RESUME_PROJECTS_ROADMAP.md
+DEPLOYMENT_SECRETS_GUIDE.md
+
+# Dynamic user uploads
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+

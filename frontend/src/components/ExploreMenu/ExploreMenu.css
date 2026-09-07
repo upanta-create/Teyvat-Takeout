@@ -1,0 +1,68 @@
+.explore-menu{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.explore-menu h1{
+    color: #262626;
+    font-weight: 500;
+}
+.explore-menu-text{
+    max-width: 60%;
+    columns: #808080;
+}
+.explore-menu-list{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    text-align: center;
+    margin: 20px 0px;
+    overflow-x: scroll;
+}
+.explore-menu-list::-webkit-scrollbar{
+    display: none;
+}
+.explore-menu-list-item img{
+    width: 7.5vw;
+    height: 7.5vw;
+    min-width: 80px;
+    min-height: 80px;
+    cursor: pointer;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    border: 3px solid transparent;
+}
+.explore-menu-list-item:hover img{
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 8px 20px rgba(234, 88, 12, 0.2);
+}
+.explore-menu-list-item p{
+    margin-top: 10px;
+    color: #475569;
+    font-size: max(1.1vw, 15px);
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.explore-menu-list-item:hover p{
+    color: #ea580c;
+}
+.explore-menu hr{
+    margin: 15px 0px;
+    height: 1px;
+    background-color: #f1f5f9;
+    border: none;
+}
+.explore-menu-list-item .active{
+    border: 3.5px solid #ea580c;
+    box-shadow: 0 0 0 4px rgba(234, 88, 12, 0.15);
+}
+@media (max-width:1050px) {
+    .explore-menu-text{
+        max-width: 100%;
+        font-size: 14px;
+    }
+}

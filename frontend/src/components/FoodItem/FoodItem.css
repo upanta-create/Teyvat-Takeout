@@ -1,0 +1,221 @@
+.food-item {
+  width: 100%;
+  margin: auto;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.food-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+}
+
+.food-item-img-container {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  background: #f1f5f9;
+  overflow: hidden;
+}
+
+.food-item-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.food-item:hover .food-item-image {
+  transform: scale(1.05);
+}
+
+.food-item-info {
+  padding: 16px 18px 18px;
+}
+
+.food-item-name-rating {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.food-item-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #1e293b;
+  line-height: 1.3;
+}
+
+.food-rating-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #fef3c7;
+  border: 1px solid #fde68a;
+  padding: 4px 9px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #92400e;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.food-rating-badge:hover {
+  transform: scale(1.06);
+  background: #fde68a;
+}
+
+.food-rating-badge.new-dish {
+  background: #f1f5f9;
+  border-color: #e2e8f0;
+  color: #64748b;
+}
+
+.food-rating-badge .star-icon {
+  color: #f59e0b;
+  font-size: 13px;
+}
+
+.food-rating-badge .rating-count {
+  font-size: 11px;
+  color: #b45309;
+  font-weight: 500;
+}
+
+.food-rating-badge.new-dish .rating-count {
+  color: #94a3b8;
+}
+
+.food-item-desc {
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 12px;
+  min-height: 38px;
+}
+
+.food-item-bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.food-item-price {
+  color: #ea580c;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.rate-dish-btn {
+  background: #fff7ed;
+  border: 1px solid #ffedd5;
+  color: #ea580c;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.rate-dish-btn:hover {
+  background: #ea580c;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(234, 88, 12, 0.25);
+}
+
+.food-item-add-btn {
+  position: absolute;
+  width: 38px;
+  height: 38px;
+  bottom: 12px;
+  right: 12px;
+  background: #ffffff;
+  border: 1.5px solid rgba(0, 0, 0, 0.06);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ea580c;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.food-item-add-btn:hover {
+  background: #ea580c;
+  color: #ffffff;
+  transform: scale(1.12);
+  box-shadow: 0 6px 18px rgba(234, 88, 12, 0.35);
+}
+
+.food-item-counter {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.counter-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.counter-btn.remove-btn {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.counter-btn.remove-btn:hover {
+  background: #dc2626;
+  color: #ffffff;
+  transform: scale(1.15);
+}
+
+.counter-btn.add-btn {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.counter-btn.add-btn:hover {
+  background: #16a34a;
+  color: #ffffff;
+  transform: scale(1.15);
+}
+
+.counter-val {
+  font-weight: 800;
+  color: #0f172a;
+  font-size: 14px;
+  min-width: 16px;
+  text-align: center;
+}
