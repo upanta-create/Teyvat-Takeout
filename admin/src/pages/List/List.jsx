@@ -26,6 +26,11 @@ const List = ({ url }) => {
   const [editUseUrl, setEditUseUrl] = useState(false);
   const [updating, setUpdating] = useState(false);
 
+  // Delete Confirmation Modal State
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deletingFood, setDeletingFood] = useState(null);
+  const [deleting, setDeleting] = useState(false);
+
   const fetchList = async () => {
     try {
       const response = await axios.get(`${url}/api/food/list`);
@@ -50,24 +55,32 @@ const List = ({ url }) => {
     }
   };
 
-  const removeFood = async (foodId, foodName) => {
-    if (!window.confirm(`Are you sure you want to remove "${foodName}" from the menu?`)) {
-      return;
-    }
+  const openDeleteModal = (food) => {
+    setDeletingFood(food);
+    setShowDeleteModal(true);
+  };
+
+  const handleExecuteDelete = async () => {
+    if (!deletingFood) return;
+    setDeleting(true);
     try {
       const response = await axios.post(
         `${url}/api/food/remove`,
-        { id: foodId },
+        { id: deletingFood._id },
         { headers: { token } }
       );
       if (response.data.success) {
-        toast.success(`Removed "${foodName}" from catalog`);
+        toast.success(`Removed "${deletingFood.name}" from catalog`);
+        setShowDeleteModal(false);
+        setDeletingFood(null);
         await fetchList();
       } else {
         toast.error(response.data.message || "Failed to remove item");
       }
     } catch (err) {
       toast.error("Error removing item");
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -133,7 +146,8 @@ const List = ({ url }) => {
   };
 
   useEffect(() => {
-    if (!admin && !token) {
+    const isAuth = (admin || localStorage.getItem("admin")) && (token || localStorage.getItem("token"));
+    if (!isAuth) {
       toast.error("Please sign in as Admin first");
       navigate("/");
     }
@@ -241,16 +255,16 @@ const List = ({ url }) => {
                       <button
                         onClick={() => openEditModal(item)}
                         className="dish-edit-btn"
-                        title="Edit dish"
+                        title="Edit dish details"
                       >
                         ✏️ Edit
                       </button>
                       <button
-                        onClick={() => removeFood(item._id, item.name)}
+                        onClick={() => openDeleteModal(item)}
                         className="delete-item-btn"
                         title="Delete dish"
                       >
-                        🗑️
+                        🗑️ Remove
                       </button>
                     </div>
                   </td>
@@ -436,6 +450,44 @@ const List = ({ url }) => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && deletingFood && (
+        <div className="modal-overlay" onClick={() => setShowDeleteModal(false)}>
+          <div className="delete-modal-card" onClick={(e) => e.stopPropagation()}>
+            <div className="delete-modal-header">
+              <div className="delete-warning-icon">⚠️</div>
+              <h3>Confirm Dish Deletion</h3>
+            </div>
+            <div className="delete-modal-body">
+              <p>
+                Are you sure you want to permanently delete <strong>"{deletingFood.name}"</strong> (₹{deletingFood.price}) from the menu catalog?
+              </p>
+              <span className="delete-subtext">
+                This item will be removed from customer menus immediately.
+              </span>
+            </div>
+            <div className="modal-actions delete-actions">
+              <button
+                type="button"
+                className="cancel-modal-btn"
+                onClick={() => setShowDeleteModal(false)}
+                disabled={deleting}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="confirm-delete-btn"
+                onClick={handleExecuteDelete}
+                disabled={deleting}
+              >
+                {deleting ? "Deleting..." : "Yes, Delete Dish"}
+              </button>
+            </div>
           </div>
         </div>
       )}

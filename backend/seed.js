@@ -45,7 +45,7 @@ const defaultCategories = [
   {
     name: "Pasta",
     description: "Hand-rolled Italian pastas tossed in velvety sauces and aged cheeses.",
-    image: "https://images.unsplash.com/photo-1621996346565-e3d5d6281699?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=800&q=80",
     isActive: true,
   },
   {
