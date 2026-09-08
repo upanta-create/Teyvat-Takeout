@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: teyvat-backend
+  namespace: teyvat-takeout
+  labels:
+    app: teyvat-backend
+    tier: api
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 4000
+      targetPort: 4000
+      protocol: TCP
+  selector:
+    app: teyvat-backend
