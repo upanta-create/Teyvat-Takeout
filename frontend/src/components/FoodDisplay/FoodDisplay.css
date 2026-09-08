@@ -64,3 +64,106 @@
   background: #fed7aa;
   margin-top: 30px;
 }
+
+/* Header Row with View All Link */
+.food-display-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.food-display-subtitle {
+  color: #64748b;
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+.view-all-header-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #ea580c;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  padding: 8px 18px;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: 30px;
+  transition: all 0.25s ease;
+}
+
+.view-all-header-link span {
+  transition: transform 0.2s ease;
+}
+
+.view-all-header-link:hover {
+  background: #ea580c;
+  color: #ffffff;
+  border-color: #ea580c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(234, 88, 12, 0.25);
+}
+
+.view-all-header-link:hover span {
+  transform: translateX(4px);
+}
+
+/* Explore More Full Menu Card */
+.food-display-explore-more {
+  margin-top: 60px;
+  padding: 40px 30px;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border-radius: 24px;
+  text-align: center;
+  box-shadow: 0 12px 36px rgba(15, 23, 42, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.explore-more-content h3 {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.explore-more-content p {
+  color: #94a3b8;
+  font-size: 15px;
+  max-width: 540px;
+  margin: 0 auto 24px;
+  line-height: 1.5;
+}
+
+.explore-all-dishes-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ea580c;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 13px 32px;
+  border-radius: 50px;
+  text-decoration: none;
+  box-shadow: 0 4px 18px rgba(234, 88, 12, 0.35);
+  transition: all 0.25s ease;
+}
+
+.explore-all-dishes-btn span {
+  transition: transform 0.2s ease;
+}
+
+.explore-all-dishes-btn:hover {
+  background: #f97316;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 22px rgba(234, 88, 12, 0.45);
+}
+
+.explore-all-dishes-btn:hover span {
+  transform: translateX(4px);
+}

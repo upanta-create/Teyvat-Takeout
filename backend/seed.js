@@ -1,8 +1,60 @@
 import mongoose from "mongoose";
 import "dotenv/config";
 import foodModel from "./models/foodModel.js";
+import categoryModel from "./models/categoryModel.js";
 
 const MONGO_URI = process.env.MONGO_URL || process.env.MONGO_URI || "mongodb://127.0.0.1:27017/teyvat_takeout";
+
+const defaultCategories = [
+  {
+    name: "Salad",
+    description: "Crisp, farm-fresh gourmet salads with handcrafted artisanal dressings.",
+    image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80",
+    isActive: true,
+  },
+  {
+    name: "Rolls",
+    description: "Flaky wraps and rolls packed with premium proteins and zesty sauces.",
+    image: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=800&q=80",
+    isActive: true,
+  },
+  {
+    name: "Deserts",
+    description: "Single-origin chocolates, velvety cheesecakes, and artisanal sweet delights.",
+    image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=800&q=80",
+    isActive: true,
+  },
+  {
+    name: "Sandwich",
+    description: "Artisanal sourdough and focaccia sandwiches loaded with gourmet fillings.",
+    image: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=800&q=80",
+    isActive: true,
+  },
+  {
+    name: "Cake",
+    description: "Multi-layered celebration cakes baked to perfection with pure buttercream.",
+    image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800&q=80",
+    isActive: true,
+  },
+  {
+    name: "Pure Veg",
+    description: "100% vegetarian culinary specialties rich in authentic spice and flavor.",
+    image: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=800&q=80",
+    isActive: true,
+  },
+  {
+    name: "Pasta",
+    description: "Hand-rolled Italian pastas tossed in velvety sauces and aged cheeses.",
+    image: "https://images.unsplash.com/photo-1621996346565-e3d5d6281699?auto=format&fit=crop&w=800&q=80",
+    isActive: true,
+  },
+  {
+    name: "Noodles",
+    description: "Wok-tossed ramen, udon, and egg noodles bursting with umami notes.",
+    image: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=800&q=80",
+    isActive: true,
+  },
+];
 
 const gourmetFoods = [
   // --- SALADS ---
@@ -316,15 +368,18 @@ async function seedDatabase() {
     await mongoose.connect(MONGO_URI);
     console.log("Connected to MongoDB successfully!");
 
-    console.log("Clearing existing food catalog...");
-    await foodModel.deleteMany({});
+    console.log("Clearing and updating category catalog...");
+    await categoryModel.deleteMany({});
+    const insertedCategories = await categoryModel.insertMany(defaultCategories);
+    console.log(`Successfully seeded ${insertedCategories.length} categories!`);
 
-    console.log(`Inserting ${gourmetFoods.length} handcrafted gourmet dishes...`);
+    console.log("Clearing and seeding food catalog...");
+    await foodModel.deleteMany({});
     const inserted = await foodModel.insertMany(gourmetFoods);
     console.log(`Successfully seeded ${inserted.length} dishes across all categories!`);
 
     const categories = Array.from(new Set(inserted.map(item => item.category)));
-    console.log("Categories seeded:", categories);
+    console.log("Active dish categories:", categories);
 
     await mongoose.connection.close();
     console.log("MongoDB connection closed. Seeding complete!");

@@ -29,6 +29,18 @@ const Header = () => {
 
   return (
     <div className="header" ref={headerRef}>
+      {/* Background Video */}
+      <video
+        className="header-video-bg"
+        autoPlay
+        loop
+        muted
+        playsInline
+      >
+        <source src="/hero_video.mp4" type="video/mp4" />
+        <source src="https://cdn.pixabay.com/video/2023/01/28/148288-793718093_tiny.mp4" type="video/mp4" />
+      </video>
+
       <div className="header-overlay"></div>
       <div className={`header-contents ${isVisible ? "animate-reveal" : "hidden-reveal"}`}>
         <span className="header-pill">Artisanal Gastronomy Delivered</span>
