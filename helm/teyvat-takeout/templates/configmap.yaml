@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "teyvat-takeout.fullname" . }}-config
+  labels:
+    {{- include "teyvat-takeout.labels" . | nindent 4 }}
+data:
+  PORT: {{ .Values.backend.env.PORT | quote }}
+  NODE_ENV: {{ .Values.backend.env.NODE_ENV | quote }}
+  LOG_LEVEL: {{ .Values.backend.env.LOG_LEVEL | quote }}
+  FRONTEND_URL: {{ .Values.backend.env.FRONTEND_URL | quote }}
+  SALT: {{ .Values.backend.env.SALT | quote }}
+  {{- range .Values.backend.extraEnv }}
+  {{ .name }}: {{ .value | quote }}
+  {{- end }}

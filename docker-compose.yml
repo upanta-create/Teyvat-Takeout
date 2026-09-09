@@ -23,7 +23,27 @@ services:
       retries: 5
 
   # -------------------------------------------------------------
-  # 2. Backend Tier: Express REST API with Prometheus RED metrics
+  # 2. Cache Tier: Redis — Distributed in-memory caching layer
+  # -------------------------------------------------------------
+  redis:
+    image: redis:7.2-alpine
+    container_name: teyvat-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru --save 60 1
+    volumes:
+      - redis_data:/data
+    networks:
+      - teyvat-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # -------------------------------------------------------------
+  # 3. Backend Tier: Express REST API with Prometheus RED metrics
   # -------------------------------------------------------------
   backend:
     build:
@@ -37,6 +57,7 @@ services:
       - PORT=4000
       - NODE_ENV=production
       - MONGO_URL=mongodb://mongodb:27017/teyvat_takeout
+      - REDIS_URL=redis://redis:6379
       - JWT_SECRET=teyvat_takeout_super_secret_jwt_key_2026
       - SALT=10
       - STRIPE_SECRET_KEY=sk_test_placeholder_key
@@ -44,6 +65,8 @@ services:
       - LOG_LEVEL=info
     depends_on:
       mongodb:
+        condition: service_healthy
+      redis:
         condition: service_healthy
     volumes:
       - backend_uploads:/app/uploads
@@ -133,5 +156,6 @@ networks:
 volumes:
   mongodb_data:
   backend_uploads:
+  redis_data:
   prometheus_data:
   grafana_data:

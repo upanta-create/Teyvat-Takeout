@@ -10,6 +10,16 @@ const foodSchema = new mongoose.Schema({
   reviewsCount: { type: Number, default: 0 },
 });
 
+// Compound text index for full-text search with relevance scoring.
+// Weighted: name (3x) > description (2x) > category (1x)
+foodSchema.index(
+  { name: "text", description: "text", category: "text" },
+  { weights: { name: 3, description: 2, category: 1 }, name: "food_text_search" }
+);
+
+// Performance index for category-based filtering
+foodSchema.index({ category: 1, rating: -1 });
+
 const foodModel = mongoose.models.food || mongoose.model("food", foodSchema);
 
 export default foodModel;

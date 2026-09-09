@@ -1,0 +1,19 @@
+{{- if .Values.redis.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "teyvat-takeout.fullname" . }}-redis
+  labels:
+    {{- include "teyvat-takeout.labels" . | nindent 4 }}
+    app.kubernetes.io/component: redis
+    tier: cache
+spec:
+  type: {{ .Values.redis.service.type }}
+  ports:
+    - port: {{ .Values.redis.service.port }}
+      targetPort: {{ .Values.redis.service.port }}
+      protocol: TCP
+      name: redis
+  selector:
+    {{- include "teyvat-takeout.redis.selectorLabels" . | nindent 4 }}
+{{- end }}

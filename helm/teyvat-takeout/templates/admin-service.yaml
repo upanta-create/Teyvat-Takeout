@@ -1,0 +1,19 @@
+{{- if .Values.admin.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "teyvat-takeout.fullname" . }}-admin
+  labels:
+    {{- include "teyvat-takeout.labels" . | nindent 4 }}
+    app.kubernetes.io/component: admin
+    tier: admin-portal
+spec:
+  type: {{ .Values.admin.service.type }}
+  ports:
+    - port: {{ .Values.admin.service.port }}
+      targetPort: {{ .Values.admin.service.targetPort }}
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "teyvat-takeout.admin.selectorLabels" . | nindent 4 }}
+{{- end }}
