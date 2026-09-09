@@ -1,0 +1,66 @@
+.food-display {
+  margin-top: 30px;
+}
+
+.food-display h2 {
+  font-size: max(2vw, 24px);
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.5px;
+}
+
+.recommendations-container {
+  background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+  border: 1px solid #fed7aa;
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 50px;
+}
+
+.recommendations-header {
+  margin-bottom: 24px;
+}
+
+.rec-badge {
+  display: inline-block;
+  background: #ea580c;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+}
+
+.recommendations-header h2 {
+  font-size: 22px;
+  color: #7c2d12;
+  margin-bottom: 4px;
+}
+
+.recommendations-header p {
+  font-size: 14px;
+  color: #9a3412;
+}
+
+.food-display-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  margin-top: 30px;
+  gap: 30px;
+  row-gap: 50px;
+}
+
+.recommendations-list {
+  margin-top: 20px;
+  row-gap: 30px;
+}
+
+.rec-divider {
+  border: none;
+  height: 1px;
+  background: #fed7aa;
+  margin-top: 30px;
+}

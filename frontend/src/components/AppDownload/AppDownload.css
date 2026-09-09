@@ -1,0 +1,91 @@
+.app-download {
+  margin: 90px auto 40px;
+  text-align: center;
+  padding: 50px 24px;
+  background: linear-gradient(180deg, #fafaf9 0%, #f5f5f4 100%);
+  border-radius: 28px;
+  border: 1px solid #e7e5e4;
+}
+
+.app-download-badge {
+  display: inline-block;
+  background: #fff7ed;
+  color: #ea580c;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid #fed7aa;
+  margin-bottom: 16px;
+}
+
+.app-download h2 {
+  font-size: clamp(24px, 3.2vw, 38px);
+  font-weight: 800;
+  color: #1c1917;
+  line-height: 1.25;
+  margin-bottom: 12px;
+}
+
+.app-download h2 span {
+  color: #ea580c;
+}
+
+.app-download p {
+  color: #78716c;
+  font-size: clamp(14px, 1.1vw, 16px);
+  max-width: 540px;
+  margin: 0 auto 32px;
+}
+
+.app-download-platforms {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.store-badge-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: #1c1917;
+  color: #ffffff;
+  padding: 10px 22px;
+  border-radius: 14px;
+  text-decoration: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+.store-badge-btn:hover {
+  background: #0c0a09;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+  color: #ffffff;
+}
+
+.store-badge-btn svg {
+  flex-shrink: 0;
+}
+
+.store-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.store-sub {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #a8a29e;
+  line-height: 1;
+}
+
+.store-title {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
+}
