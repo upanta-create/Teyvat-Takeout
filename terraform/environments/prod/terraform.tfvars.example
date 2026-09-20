@@ -1,0 +1,11 @@
+# -------------------------------------------------------------
+# Terraform Production Variables Example
+# -------------------------------------------------------------
+aws_region       = "us-east-1"
+environment      = "prod"
+cluster_name     = "teyvat-takeout-eks"
+vpc_cidr         = "10.0.0.0/16"
+instance_types   = ["t3.medium"]
+desired_capacity = 2
+min_capacity     = 2
+max_capacity     = 6
