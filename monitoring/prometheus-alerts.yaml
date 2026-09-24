@@ -1,0 +1,57 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: teyvat-takeout-alerts
+  namespace: monitoring
+  labels:
+    role: alert-rules
+    release: kube-prometheus-stack
+spec:
+  groups:
+    - name: TeyvatApiSreAlerts
+      rules:
+        # 1. High HTTP Error Rate (>5% errors over 2m)
+        - alert: HighHttpErrorRate
+          expr: |
+            (sum(rate(http_request_errors_total{app="teyvat-takeout"}[2m])) 
+            / 
+            sum(rate(http_requests_total{app="teyvat-takeout"}[2m]))) * 100 > 5
+          for: 2m
+          labels:
+            severity: critical
+          annotations:
+            summary: "High HTTP error rate on Teyvat Takeout Backend ({{ $value }}%)"
+            description: "More than 5% of API requests resulted in 4xx/5xx responses over the last 2 minutes."
+
+        # 2. High Latency P99 (>500ms over 3m)
+        - alert: HighHttpLatencyP99
+          expr: |
+            histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{app="teyvat-takeout"}[3m])) by (le)) > 0.5
+          for: 3m
+          labels:
+            severity: warning
+          annotations:
+            summary: "P99 latency exceeding 500ms on Teyvat API ({{ $value }}s)"
+            description: "The 99th percentile request duration has exceeded 500ms for more than 3 minutes."
+
+        # 3. Pod Crash Looping
+        - alert: PodCrashLooping
+          expr: |
+            rate(kube_pod_container_status_restarts_total{namespace="teyvat-takeout"}[15m]) * 60 * 5 > 0
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Pod {{ $labels.pod }} in namespace teyvat-takeout is restarting frequently"
+            description: "Container {{ $labels.container }} in pod {{ $labels.pod }} is crash looping."
+
+        # 4. Service Backend API Unreachable
+        - alert: TeyvatBackendApiDown
+          expr: |
+            absent(up{job="teyvat-backend-api"} == 1)
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Teyvat Backend API targets are down or unreachable"
+            description: "Prometheus has been unable to scrape any healthy backend endpoints for 1 minute."

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: teyvat-config
+  namespace: teyvat-takeout
+data:
+  PORT: "4000"
+  NODE_ENV: "production"
+  LOG_LEVEL: "info"
+  FRONTEND_URL: "https://teyvat-takeout.example.com"
+  SALT: "10"

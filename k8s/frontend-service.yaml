@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: teyvat-frontend
+  namespace: teyvat-takeout
+  labels:
+    app: teyvat-frontend
+    tier: frontend
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+      protocol: TCP
+  selector:
+    app: teyvat-frontend

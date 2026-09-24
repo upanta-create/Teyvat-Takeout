@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: teyvat-backend-servicemonitor
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+    app: teyvat-backend
+spec:
+  selector:
+    matchLabels:
+      app: teyvat-backend
+  namespaceSelector:
+    matchNames:
+      - teyvat-takeout
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s
+      scrapeTimeout: 10s

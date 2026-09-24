@@ -1,0 +1,49 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: teyvat-ingress
+  namespace: teyvat-takeout
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/healthcheck-path: /healthz
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+spec:
+  rules:
+    - host: teyvat-takeout.example.com
+      http:
+        paths:
+          # Backend REST API
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: teyvat-backend
+                port:
+                  number: 4000
+          # Backend Static Image Uploads
+          - path: /images
+            pathType: Prefix
+            backend:
+              service:
+                name: teyvat-backend
+                port:
+                  number: 4000
+          # Admin Operations Portal
+          - path: /admin
+            pathType: Prefix
+            backend:
+              service:
+                name: teyvat-admin
+                port:
+                  number: 80
+          # Customer SPA Frontend Root
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: teyvat-frontend
+                port:
+                  number: 80
