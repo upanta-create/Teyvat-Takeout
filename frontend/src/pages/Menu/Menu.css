@@ -1,0 +1,251 @@
+.menu-page {
+  padding: 30px 0 60px;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.menu-header {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.menu-badge {
+  display: inline-block;
+  background: #fff4f0;
+  color: #ea580c;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(234, 88, 12, 0.2);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.menu-header h1 {
+  font-size: 36px;
+  font-weight: 800;
+  color: #1f2937;
+  margin-bottom: 12px;
+}
+
+.menu-header p {
+  color: #6b7280;
+  font-size: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.menu-sticky-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 80;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 16px 8px 12px 8px;
+  margin: 0 -8px 24px -8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 0 0 16px 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+}
+
+.menu-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.menu-search-wrapper {
+  position: relative;
+  flex: 1;
+  min-width: 280px;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon-svg {
+  position: absolute;
+  left: 14px;
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+.menu-search-input {
+  width: 100%;
+  padding: 12px 40px 12px 44px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 50px;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.25s ease;
+  background: #f8fafc;
+}
+
+.menu-search-input:focus {
+  border-color: #ea580c;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(234, 88, 12, 0.12);
+}
+
+.search-clear-btn {
+  position: absolute;
+  right: 14px;
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.menu-sort-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.menu-sort-select {
+  padding: 10px 16px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 14px;
+  background: #ffffff;
+  outline: none;
+  cursor: pointer;
+  color: #1f2937;
+  font-weight: 500;
+  transition: border-color 0.2s;
+}
+
+.menu-sort-select:focus {
+  border-color: #ea580c;
+}
+
+.menu-category-pills {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+}
+
+.category-pill {
+  padding: 8px 20px;
+  border-radius: 50px;
+  border: 1.5px solid #e5e7eb;
+  background: #ffffff;
+  color: #4b5563;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.category-pill:hover {
+  border-color: #ea580c;
+  color: #ea580c;
+}
+
+.category-pill.active {
+  background: #ea580c;
+  border-color: #ea580c;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+}
+
+.menu-results-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.active-filter-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f3f4f6;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #374151;
+}
+
+.active-filter-tag button {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.menu-food-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 30px;
+  row-gap: 50px;
+}
+
+.menu-empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  background: #f9fafb;
+  border-radius: 16px;
+  border: 1.5px dashed #e5e7eb;
+}
+
+.empty-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.menu-empty-state h3 {
+  font-size: 20px;
+  color: #1f2937;
+  margin-bottom: 6px;
+}
+
+.menu-empty-state p {
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.reset-filters-btn {
+  background: #ea580c;
+  color: #ffffff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.reset-filters-btn:hover {
+  background: #c2410c;
+}
+
+@media (max-width: 768px) {
+  .menu-header h1 {
+    font-size: 28px;
+  }
+  .menu-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
