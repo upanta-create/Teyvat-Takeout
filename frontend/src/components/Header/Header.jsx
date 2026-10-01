@@ -1,12 +1,37 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Header.css";
 
 const Header = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const headerRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        } else {
+          // Reset when scrolled out of view so it reveals again when scrolling back up
+          setIsVisible(false);
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    if (headerRef.current) {
+      observer.observe(headerRef.current);
+    }
+
+    return () => {
+      if (headerRef.current) observer.unobserve(headerRef.current);
+    };
+  }, []);
+
   return (
-    <div className="header">
+    <div className="header" ref={headerRef}>
       <div className="header-overlay"></div>
-      <div className="header-contents">
-        <span className="header-pill">✨ Artisanal Gastronomy Delivered</span>
+      <div className={`header-contents ${isVisible ? "animate-reveal" : "hidden-reveal"}`}>
+        <span className="header-pill">Artisanal Gastronomy Delivered</span>
         <h2>Order your favourite gourmet dishes here</h2>
         <p>
           Choose from a curated culinary menu featuring a delectable array of dishes
