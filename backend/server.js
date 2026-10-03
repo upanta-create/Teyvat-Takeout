@@ -8,6 +8,8 @@ import userRouter from "./routes/userRoute.js";
 import cartRouter from "./routes/cartRoute.js";
 import orderRouter from "./routes/orderRoute.js";
 import reviewRouter from "./routes/reviewRoute.js";
+import categoryRouter from "./routes/categoryRoute.js";
+import { streamGridFSImage } from "./utils/gridfs.js";
 import logger from "./utils/logger.js";
 import { metricsMiddleware, register } from "./middleware/metrics.js";
 
@@ -70,8 +72,12 @@ app.get("/metrics", async (req, res) => {
 // -------------------------------------------------------------
 // Application REST API Routes
 // -------------------------------------------------------------
-app.use("/api/food", foodRouter);
+// GridFS and Local Image Streamer
+app.get("/images/:filename", streamGridFSImage);
 app.use("/images", express.static("uploads"));
+
+app.use("/api/food", foodRouter);
+app.use("/api/category", categoryRouter);
 app.use("/api/user", userRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/order", orderRouter);

@@ -9,6 +9,7 @@ const Add = ({ url }) => {
   const navigate = useNavigate();
   const { token, admin } = useContext(StoreContext);
   const [image, setImage] = useState(false);
+  const [categoriesList, setCategoriesList] = useState([]);
   const [data, setData] = useState({
     name: "",
     description: "",
@@ -17,6 +18,21 @@ const Add = ({ url }) => {
     customCategory: "",
     rating: "4.8",
   });
+
+  const fetchCategories = async () => {
+    try {
+      const res = await axios.get(`${url}/api/category/list`);
+      if (res.data.success && res.data.data.length > 0) {
+        setCategoriesList(res.data.data);
+        setData((prev) => ({
+          ...prev,
+          category: prev.category || res.data.data[0].name,
+        }));
+      }
+    } catch (err) {
+      console.error("Error loading categories in Add page:", err);
+    }
+  };
 
   const onChangeHandler = (event) => {
     const name = event.target.name;
@@ -51,7 +67,7 @@ const Add = ({ url }) => {
           name: "",
           description: "",
           price: "",
-          category: "Salad",
+          category: categoriesList[0]?.name || "Salad",
           customCategory: "",
           rating: "4.8",
         });
@@ -69,6 +85,8 @@ const Add = ({ url }) => {
     if (!admin && !token) {
       toast.error("Please sign in as Admin first");
       navigate("/");
+    } else {
+      fetchCategories();
     }
   }, [admin, token]);
 
@@ -159,14 +177,11 @@ const Add = ({ url }) => {
                 onChange={onChangeHandler}
                 value={data.category}
               >
-                <option value="Salad">Salad</option>
-                <option value="Rolls">Rolls</option>
-                <option value="Deserts">Deserts</option>
-                <option value="Sandwich">Sandwich</option>
-                <option value="Cake">Cake</option>
-                <option value="Pure Veg">Pure Veg</option>
-                <option value="Pasta">Pasta</option>
-                <option value="Noodles">Noodles</option>
+                {categoriesList.map((cat) => (
+                  <option key={cat._id} value={cat.name}>
+                    {cat.name}
+                  </option>
+                ))}
                 <option value="Custom">+ Add Custom Category...</option>
               </select>
             </div>

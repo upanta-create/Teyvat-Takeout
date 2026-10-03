@@ -1,18 +1,25 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Menu.css";
 import { StoreContext } from "../../context/StoreContext";
 import FoodItem from "../../components/FoodItem/FoodItem";
 
 const Menu = () => {
-  const { food_list } = useContext(StoreContext);
+  const { food_list, fetchFoodList, category_list, fetchCategoryList } = useContext(StoreContext);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("default");
 
-  // Dynamically extract unique categories directly from the database food list
+  useEffect(() => {
+    if (fetchFoodList) fetchFoodList();
+    if (fetchCategoryList) fetchCategoryList();
+  }, []);
+
+  // Dynamically extract categories from database category_list, with fallback to food_list
   const dynamicCategories = [
     "All",
-    ...Array.from(new Set(food_list.map((item) => item.category).filter(Boolean))),
+    ...(category_list && category_list.length > 0
+      ? category_list.map((c) => c.name)
+      : Array.from(new Set(food_list.map((item) => item.category).filter(Boolean)))),
   ];
 
   // Filter food items based on category and search query
@@ -101,7 +108,7 @@ const Menu = () => {
 
       {/* Food Grid */}
       <div className="menu-results-info">
-        <span>Showing <strong>{filteredFoods.length}</strong> delicacies</span>
+        <span>Showing <strong>{filteredFoods.length}</strong> dishes</span>
         {selectedCategory !== "All" && (
           <span className="active-filter-tag">
             Category: {selectedCategory}

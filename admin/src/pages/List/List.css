@@ -180,6 +180,30 @@
   font-size: 15px;
 }
 
+.dish-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dish-edit-btn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #334155;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dish-edit-btn:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+  color: #0f172a;
+}
+
 .delete-item-btn {
   padding: 6px 12px;
   border-radius: 8px;
@@ -195,6 +219,49 @@
 .delete-item-btn:hover {
   background: #e11d48;
   color: #ffffff;
+}
+
+/* Edit Dish Modal Card */
+.dish-modal-card {
+  background: #ffffff;
+  border-radius: 24px;
+  width: 100%;
+  max-width: 580px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.flex-2 {
+  flex: 2;
+}
+
+.form-group select {
+  padding: 11px 14px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 14px;
+  color: #1e293b;
+  background: #fdfdfd;
+  outline: none;
+  font-family: inherit;
+}
+
+.form-group select:focus {
+  border-color: #ea580c;
+  box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.1);
 }
 
 @media (max-width: 768px) {

@@ -10,6 +10,7 @@ const StoreContextProvider = (props) => {
   const url = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
   const [token, setToken] = useState("");
   const [food_list, setFoodList] = useState([]);
+  const [category_list, setCategoryList] = useState([]);
 
   // Modal & Recommendation States
   const [showLogin, setShowLogin] = useState(false);
@@ -78,6 +79,17 @@ const StoreContextProvider = (props) => {
     }
   };
 
+  const fetchCategoryList = async () => {
+    try {
+      const response = await axios.get(url + "/api/category/list");
+      if (response.data.success) {
+        setCategoryList(response.data.data);
+      }
+    } catch (err) {
+      console.error("Error fetching category list:", err);
+    }
+  };
+
   const fetchRecommendations = async (authToken) => {
     const activeToken = authToken || token || localStorage.getItem("token");
     if (!activeToken) {
@@ -129,7 +141,7 @@ const StoreContextProvider = (props) => {
 
   useEffect(() => {
     async function loadData() {
-      await fetchFoodList();
+      await Promise.all([fetchFoodList(), fetchCategoryList()]);
       const savedToken = localStorage.getItem("token");
       if (savedToken) {
         setToken(savedToken);
@@ -150,6 +162,8 @@ const StoreContextProvider = (props) => {
 
   const contextValue = {
     food_list,
+    category_list,
+    fetchCategoryList,
     cartItems,
     setCartItems,
     addToCart,

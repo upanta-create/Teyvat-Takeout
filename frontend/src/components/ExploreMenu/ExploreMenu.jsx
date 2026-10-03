@@ -3,20 +3,23 @@ import "./ExploreMenu.css";
 import { StoreContext } from "../../context/StoreContext";
 
 const ExploreMenu = ({ category, setCategory }) => {
-  const { food_list, getImageUrl } = useContext(StoreContext);
+  const { food_list, category_list, getImageUrl } = useContext(StoreContext);
 
-  // Dynamically extract unique categories and their preview images from the database catalog
-  const categoryMap = new Map();
-  food_list.forEach((item) => {
-    if (item.category && !categoryMap.has(item.category)) {
-      categoryMap.set(item.category, item.image);
-    }
-  });
-
-  const categories = Array.from(categoryMap.entries()).map(([name, image]) => ({
-    name,
-    image,
-  }));
+  // Use database categories if available, else extract unique categories from food_list
+  const categories = category_list && category_list.length > 0
+    ? category_list.map((c) => ({ name: c.name, image: c.image }))
+    : (() => {
+        const categoryMap = new Map();
+        food_list.forEach((item) => {
+          if (item.category && !categoryMap.has(item.category)) {
+            categoryMap.set(item.category, item.image);
+          }
+        });
+        return Array.from(categoryMap.entries()).map(([name, image]) => ({
+          name,
+          image,
+        }));
+      })();
 
   return (
     <div className="explore-menu" id="explore-menu">
