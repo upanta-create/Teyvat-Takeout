@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Navbar from "./components/Navbar/Navbar";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import Menu from "./pages/Menu/Menu";
 import About from "./pages/About/About";
@@ -18,12 +18,23 @@ import Verify from "./pages/Verify/Verify";
 import MyOrders from "./pages/MyOrders/MyOrders";
 import { StoreContext } from "./context/StoreContext";
 
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [pathname]);
+
+  return null;
+};
+
 const App = () => {
   const { showLogin, setShowLogin, showReviewModal, setShowReviewModal, reviewTargetFood } =
     useContext(StoreContext);
 
   return (
     <>
+      <ScrollToTop />
       {showLogin && <LoginPopup setShowLogin={setShowLogin} />}
       {showReviewModal && (
         <ReviewModal

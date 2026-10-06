@@ -1,14 +1,26 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import "./Navbar.css";
 import { assets } from "../../assets/frontend_assets/assets";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { StoreContext } from "../../context/StoreContext";
 import { toast } from "react-toastify";
 
 const Navbar = ({ setShowLogin }) => {
-  const [menu, setMenu] = useState("home");
   const { getTotalCartAmount, token, setToken } = useContext(StoreContext);
   const navigate = useNavigate();
+  const location = useLocation();
+  const pathname = location.pathname;
+
+  const getActiveMenu = () => {
+    if (pathname === "/") return "home";
+    if (pathname.startsWith("/menu")) return "menu";
+    if (pathname.startsWith("/about")) return "about";
+    if (pathname.startsWith("/delivery")) return "delivery";
+    if (pathname.startsWith("/contact")) return "contact";
+    return "";
+  };
+
+  const activeMenu = getActiveMenu();
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -26,36 +38,31 @@ const Navbar = ({ setShowLogin }) => {
       <ul className="navbar-menu">
         <Link
           to="/"
-          onClick={() => setMenu("home")}
-          className={menu === "home" ? "active" : ""}
+          className={activeMenu === "home" ? "active" : ""}
         >
           Home
         </Link>
         <Link
           to="/menu"
-          onClick={() => setMenu("menu")}
-          className={menu === "menu" ? "active" : ""}
+          className={activeMenu === "menu" ? "active" : ""}
         >
           Menu
         </Link>
         <Link
           to="/about"
-          onClick={() => setMenu("about")}
-          className={menu === "about" ? "active" : ""}
+          className={activeMenu === "about" ? "active" : ""}
         >
           About Us
         </Link>
         <Link
           to="/delivery"
-          onClick={() => setMenu("delivery")}
-          className={menu === "delivery" ? "active" : ""}
+          className={activeMenu === "delivery" ? "active" : ""}
         >
           Delivery
         </Link>
         <Link
           to="/contact"
-          onClick={() => setMenu("contact")}
-          className={menu === "contact" ? "active" : ""}
+          className={activeMenu === "contact" ? "active" : ""}
         >
           Contact Us
         </Link>

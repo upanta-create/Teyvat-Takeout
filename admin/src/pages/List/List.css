@@ -235,6 +235,89 @@
   overflow-y: auto;
 }
 
+/* Delete Confirmation Modal Card */
+.delete-modal-card {
+  background: #ffffff;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 460px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  border: 1px solid #fee2e2;
+  overflow: hidden;
+  animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  padding: 24px;
+}
+
+.delete-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.delete-warning-icon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.delete-modal-header h3 {
+  font-size: 19px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+
+.delete-modal-body {
+  margin-bottom: 24px;
+}
+
+.delete-modal-body p {
+  font-size: 14.5px;
+  color: #334155;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.delete-subtext {
+  display: block;
+  font-size: 13px;
+  color: #dc2626;
+  font-weight: 500;
+  background: #fef2f2;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #fee2e2;
+}
+
+.delete-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.confirm-delete-btn {
+  padding: 10px 20px;
+  background: #dc2626;
+  color: #ffffff;
+  font-size: 13.5px;
+  font-weight: 700;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
+}
+
+.confirm-delete-btn:hover {
+  background: #b91c1c;
+  transform: translateY(-1px);
+}
+
+.confirm-delete-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .form-row {
   display: flex;
   gap: 16px;

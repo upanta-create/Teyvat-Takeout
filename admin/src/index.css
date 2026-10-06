@@ -17,10 +17,12 @@ a{
 hr{
     border: none;
     height: 1px;
-    background-color: #a9a9a9;
+    background-color: #e2e8f0;
 }
 .app-content{
     display: flex;
+    min-height: calc(100vh - 69px);
+    width: 100%;
 }
 .flex-col{
     display: flex;

@@ -82,7 +82,8 @@ const Add = ({ url }) => {
   };
 
   useEffect(() => {
-    if (!admin && !token) {
+    const isAuth = (admin || localStorage.getItem("admin")) && (token || localStorage.getItem("token"));
+    if (!isAuth) {
       toast.error("Please sign in as Admin first");
       navigate("/");
     } else {

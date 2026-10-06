@@ -48,31 +48,15 @@
 }
 
 /* Hidden Initial State for Reveal */
-.header-contents.hidden-reveal > * {
+.header-contents.hidden-reveal {
   opacity: 0;
-  transform: translateY(24px);
-  filter: blur(4px);
+  transform: translateY(28px);
+  filter: blur(6px);
 }
 
-/* Smooth Staggered Reveal Animation */
-.header-contents.animate-reveal > * {
+/* Smooth Unified Reveal Animation for the entire block together */
+.header-contents.animate-reveal {
   animation: revealWordsSlow 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.header-contents.animate-reveal .header-pill {
-  animation-delay: 0.1s;
-}
-
-.header-contents.animate-reveal h2 {
-  animation-delay: 0.28s;
-}
-
-.header-contents.animate-reveal p {
-  animation-delay: 0.48s;
-}
-
-.header-contents.animate-reveal .header-actions {
-  animation-delay: 0.68s;
 }
 
 @keyframes revealWordsSlow {
