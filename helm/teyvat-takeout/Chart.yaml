@@ -1,0 +1,24 @@
+apiVersion: v2
+name: teyvat-takeout
+description: Enterprise Helm chart for Teyvat Takeout — a 3-tier cloud-native food delivery platform on Kubernetes (AWS EKS)
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - food-delivery
+  - mern-stack
+  - cloud-native
+  - kubernetes
+  - aws-eks
+  - prometheus
+  - redis
+  - devops
+home: https://github.com/upanta-create/Teyvat-Takeout
+sources:
+  - https://github.com/upanta-create/Teyvat-Takeout
+maintainers:
+  - name: Upanta Paul
+    email: upanta@example.com
+annotations:
+  artifacthub.io/category: "integration-delivery"
+  artifacthub.io/license: "MIT"

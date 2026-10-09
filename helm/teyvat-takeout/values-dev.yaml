@@ -1,0 +1,84 @@
+# ==============================================================================
+# Development / Local Environment Values Override (Minikube / Kind / Docker Desktop)
+# Usage: helm install teyvat ./helm/teyvat-takeout -f ./helm/teyvat-takeout/values-dev.yaml
+# ==============================================================================
+
+global:
+  environment: "development"
+  domain: "teyvat.local"
+
+backend:
+  replicaCount: 1
+  env:
+    NODE_ENV: "development"
+    LOG_LEVEL: "debug"
+    FRONTEND_URL: "http://teyvat.local"
+  
+  autoscaling:
+    enabled: false
+
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "128Mi"
+    limits:
+      cpu: "250m"
+      memory: "256Mi"
+
+frontend:
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: "20m"
+      memory: "32Mi"
+    limits:
+      cpu: "100m"
+      memory: "128Mi"
+
+admin:
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: "20m"
+      memory: "32Mi"
+    limits:
+      cpu: "100m"
+      memory: "128Mi"
+
+# Spin up in-cluster Redis & MongoDB for completely isolated zero-cost dev
+redis:
+  enabled: true
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "64Mi"
+
+mongodb:
+  enabled: true
+  persistence:
+    size: 2Gi
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+  hosts:
+    - host: teyvat.local
+      paths:
+        - path: /api
+          pathType: Prefix
+          service: backend
+        - path: /images
+          pathType: Prefix
+          service: backend
+        - path: /admin
+          pathType: Prefix
+          service: admin
+        - path: /
+          pathType: Prefix
+          service: frontend
+
+serviceMonitor:
+  enabled: false

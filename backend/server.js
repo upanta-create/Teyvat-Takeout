@@ -12,6 +12,7 @@ import categoryRouter from "./routes/categoryRoute.js";
 import { streamGridFSImage } from "./utils/gridfs.js";
 import logger from "./utils/logger.js";
 import { metricsMiddleware, register } from "./middleware/metrics.js";
+import { swaggerUi, swaggerSpec } from "./utils/swagger.js";
 
 // Initialize Express server
 const app = express();
@@ -83,12 +84,19 @@ app.use("/api/cart", cartRouter);
 app.use("/api/order", orderRouter);
 app.use("/api/review", reviewRouter);
 
+// Swagger Interactive API Documentation — OpenAPI 3.0
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customSiteTitle: "Teyvat Takeout API Docs",
+  customCss: `.swagger-ui .topbar { background: #0f172a; } .swagger-ui .topbar-wrapper img { content: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 30%22><text y=%2225%22 font-size=%2218%22 fill=%22%23ea580c%22 font-family=%22Arial%22 font-weight=%22bold%22>🍜 Teyvat</text></svg>'); width: 120px; }`,
+  swaggerOptions: { persistAuthorization: true }
+}));
+
 app.get("/", (req, res) => {
   res.send({
     service: "Teyvat Takeout REST API",
     status: "running",
     version: "1.0.0",
-    docs: "/api/food/list"
+    docs: "/api/docs"
   });
 });
 

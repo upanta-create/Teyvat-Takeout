@@ -11,6 +11,7 @@ const StoreContextProvider = (props) => {
   const [token, setToken] = useState("");
   const [food_list, setFoodList] = useState([]);
   const [category_list, setCategoryList] = useState([]);
+  const [appLoading, setAppLoading] = useState(true);
 
   // Modal & Recommendation States
   const [showLogin, setShowLogin] = useState(false);
@@ -141,6 +142,7 @@ const StoreContextProvider = (props) => {
 
   useEffect(() => {
     async function loadData() {
+      setAppLoading(true);
       await Promise.all([fetchFoodList(), fetchCategoryList()]);
       const savedToken = localStorage.getItem("token");
       if (savedToken) {
@@ -148,6 +150,7 @@ const StoreContextProvider = (props) => {
         await loadCardData(savedToken);
         await fetchRecommendations(savedToken);
       }
+      setAppLoading(false);
     }
     loadData();
   }, []);
@@ -184,6 +187,7 @@ const StoreContextProvider = (props) => {
     url,
     token,
     setToken,
+    appLoading,
   };
 
   return (

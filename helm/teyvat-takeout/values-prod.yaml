@@ -1,0 +1,105 @@
+# ==============================================================================
+# Production Environment Values Override (AWS EKS + AWS ALB + TLS)
+# Usage: helm upgrade --install teyvat ./helm/teyvat-takeout -n teyvat-takeout -f ./helm/teyvat-takeout/values-prod.yaml
+# ==============================================================================
+
+global:
+  environment: "production"
+  domain: "teyvat-takeout.com"
+
+backend:
+  replicaCount: 3
+  image:
+    tag: "1.0.0"
+    pullPolicy: Always
+
+  env:
+    NODE_ENV: "production"
+    LOG_LEVEL: "info"
+    FRONTEND_URL: "https://teyvat-takeout.com"
+
+  autoscaling:
+    enabled: true
+    minReplicas: 3
+    maxReplicas: 12
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 80
+
+  resources:
+    requests:
+      cpu: "300m"
+      memory: "512Mi"
+    limits:
+      cpu: "1000m"
+      memory: "1Gi"
+
+frontend:
+  replicaCount: 3
+  image:
+    tag: "1.0.0"
+    pullPolicy: Always
+
+  autoscaling:
+    enabled: true
+    minReplicas: 3
+    maxReplicas: 8
+    targetCPUUtilizationPercentage: 80
+
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "300m"
+      memory: "256Mi"
+
+admin:
+  replicaCount: 2
+  image:
+    tag: "1.0.0"
+    pullPolicy: Always
+
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "300m"
+      memory: "256Mi"
+
+# Production relies on managed MongoDB Atlas & Redis Cloud for maximum durability
+mongodb:
+  enabled: false
+
+redis:
+  enabled: true # or false if using AWS ElastiCache
+
+ingress:
+  enabled: true
+  className: "alb"
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/group.name: teyvat-prod-alb
+  hosts:
+    - host: teyvat-takeout.com
+      paths:
+        - path: /api
+          pathType: Prefix
+          service: backend
+        - path: /images
+          pathType: Prefix
+          service: backend
+        - path: /admin
+          pathType: Prefix
+          service: admin
+        - path: /
+          pathType: Prefix
+          service: frontend
+
+serviceMonitor:
+  enabled: true
+  interval: 15s

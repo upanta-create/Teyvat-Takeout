@@ -1,0 +1,19 @@
+{{- if .Values.mongodb.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "teyvat-takeout.fullname" . }}-mongodb-service
+  labels:
+    {{- include "teyvat-takeout.labels" . | nindent 4 }}
+    app.kubernetes.io/component: mongodb
+    tier: database
+spec:
+  type: {{ .Values.mongodb.service.type }}
+  ports:
+    - port: {{ .Values.mongodb.service.port }}
+      targetPort: {{ .Values.mongodb.service.port }}
+      protocol: TCP
+      name: mongo
+  selector:
+    {{- include "teyvat-takeout.mongodb.selectorLabels" . | nindent 4 }}
+{{- end }}

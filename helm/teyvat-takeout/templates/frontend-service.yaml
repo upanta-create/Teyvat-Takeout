@@ -1,0 +1,19 @@
+{{- if .Values.frontend.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "teyvat-takeout.fullname" . }}-frontend
+  labels:
+    {{- include "teyvat-takeout.labels" . | nindent 4 }}
+    app.kubernetes.io/component: frontend
+    tier: presentation
+spec:
+  type: {{ .Values.frontend.service.type }}
+  ports:
+    - port: {{ .Values.frontend.service.port }}
+      targetPort: {{ .Values.frontend.service.targetPort }}
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "teyvat-takeout.frontend.selectorLabels" . | nindent 4 }}
+{{- end }}

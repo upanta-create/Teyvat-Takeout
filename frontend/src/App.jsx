@@ -17,20 +17,35 @@ import "react-toastify/dist/ReactToastify.css";
 import Verify from "./pages/Verify/Verify";
 import MyOrders from "./pages/MyOrders/MyOrders";
 import { StoreContext } from "./context/StoreContext";
+import "./App.css";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
-
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   }, [pathname]);
-
   return null;
 };
 
+// ── Full-screen branded splash loader ─────────────────────────
+const AppLoader = () => (
+  <div className="app-loader">
+    <div className="app-loader-inner">
+      <div className="app-loader-logo">🍜</div>
+      <h2 className="app-loader-title">Teyvat Takeout</h2>
+      <div className="app-loader-bar">
+        <div className="app-loader-bar-fill" />
+      </div>
+      <p className="app-loader-sub">Preparing your menu…</p>
+    </div>
+  </div>
+);
+
 const App = () => {
-  const { showLogin, setShowLogin, showReviewModal, setShowReviewModal, reviewTargetFood } =
+  const { showLogin, setShowLogin, showReviewModal, setShowReviewModal, reviewTargetFood, appLoading } =
     useContext(StoreContext);
+
+  if (appLoading) return <AppLoader />;
 
   return (
     <>
@@ -64,3 +79,4 @@ const App = () => {
 };
 
 export default App;
+

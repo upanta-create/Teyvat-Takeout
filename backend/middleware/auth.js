@@ -5,7 +5,7 @@ import logger from "../utils/logger.js";
  * Express middleware to authenticate JWT bearer tokens from request headers.
  */
 const authMiddleware = async (req, res, next) => {
-  const { token } = req.headers;
+  const token = req.headers.token || req.headers.authorization?.replace("Bearer ", "") || req.query.token;
   if (!token) {
     return res.status(401).json({ success: false, message: "Authentication required. Please log in." });
   }

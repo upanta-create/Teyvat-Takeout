@@ -1,0 +1,306 @@
+# ==============================================================================
+# Teyvat Takeout — Enterprise Helm Chart Values
+# ==============================================================================
+
+# Global configuration shared across sub-components
+global:
+  environment: "production"
+  domain: "teyvat-takeout.example.com"
+  imagePullSecrets: []
+  # - name: ghcr-secret
+
+# ------------------------------------------------------------------------------
+# Backend API Service (Express.js / Node.js)
+# ------------------------------------------------------------------------------
+backend:
+  enabled: true
+  replicaCount: 2
+
+  image:
+    repository: ghcr.io/upanta-create/teyvat-takeout-backend
+    tag: "latest"
+    pullPolicy: IfNotPresent
+
+  service:
+    type: ClusterIP
+    port: 4000
+    targetPort: 4000
+
+  env:
+    PORT: "4000"
+    NODE_ENV: "production"
+    LOG_LEVEL: "info"
+    FRONTEND_URL: "https://teyvat-takeout.example.com"
+    SALT: "10"
+
+  # Non-sensitive config overrides
+  extraEnv: []
+
+  # References to Secret (or filled if createSecret: true below)
+  secrets:
+    create: true
+    # If using external secret management (Vault/AWS Secrets Manager), specify secret name here:
+    existingSecret: ""
+    # Defaults used if create is true and no existingSecret provided:
+    mongoUrl: "mongodb+srv://<username>:<password>@cluster0.mongodb.net/teyvat_takeout"
+    redisUrl: "redis://teyvat-takeout-redis:6379"
+    jwtSecret: "teyvat_takeout_super_secret_jwt_key_2026"
+    stripeSecretKey: "sk_test_placeholder_mock_key"
+    smtpHost: ""
+    smtpPort: "587"
+    smtpUser: ""
+    smtpPass: ""
+
+  resources:
+    requests:
+      cpu: "200m"
+      memory: "256Mi"
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 80
+
+  livenessProbe:
+    httpGet:
+      path: /healthz
+      port: 4000
+    initialDelaySeconds: 15
+    periodSeconds: 10
+    timeoutSeconds: 3
+    failureThreshold: 3
+
+  readinessProbe:
+    httpGet:
+      path: /ready
+      port: 4000
+    initialDelaySeconds: 10
+    periodSeconds: 5
+    timeoutSeconds: 2
+    failureThreshold: 2
+
+  podSecurityContext:
+    runAsNonRoot: true
+    runAsUser: 1000
+    fsGroup: 1000
+
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: false
+
+  persistence:
+    enabled: true
+    mountPath: /app/uploads
+    accessMode: ReadWriteOnce
+    size: 5Gi
+    # storageClass: "gp3"
+
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+                - key: app.kubernetes.io/component
+                  operator: In
+                  values:
+                    - backend
+            topologyKey: "kubernetes.io/hostname"
+
+  nodeSelector: {}
+  tolerations: []
+
+# ------------------------------------------------------------------------------
+# Customer SPA Frontend (React + Nginx)
+# ------------------------------------------------------------------------------
+frontend:
+  enabled: true
+  replicaCount: 2
+
+  image:
+    repository: ghcr.io/upanta-create/teyvat-takeout-frontend
+    tag: "latest"
+    pullPolicy: IfNotPresent
+
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 80
+
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "64Mi"
+    limits:
+      cpu: "200m"
+      memory: "256Mi"
+
+  autoscaling:
+    enabled: false
+    minReplicas: 2
+    maxReplicas: 6
+    targetCPUUtilizationPercentage: 80
+
+  livenessProbe:
+    httpGet:
+      path: /
+      port: 80
+    initialDelaySeconds: 10
+    periodSeconds: 15
+
+  readinessProbe:
+    httpGet:
+      path: /
+      port: 80
+    initialDelaySeconds: 5
+    periodSeconds: 5
+
+  securityContext:
+    runAsNonRoot: false
+
+# ------------------------------------------------------------------------------
+# Admin Operations Portal (React + Nginx)
+# ------------------------------------------------------------------------------
+admin:
+  enabled: true
+  replicaCount: 1
+
+  image:
+    repository: ghcr.io/upanta-create/teyvat-takeout-admin
+    tag: "latest"
+    pullPolicy: IfNotPresent
+
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 80
+
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "64Mi"
+    limits:
+      cpu: "200m"
+      memory: "256Mi"
+
+  livenessProbe:
+    httpGet:
+      path: /
+      port: 80
+    initialDelaySeconds: 10
+    periodSeconds: 15
+
+  readinessProbe:
+    httpGet:
+      path: /
+      port: 80
+    initialDelaySeconds: 5
+    periodSeconds: 5
+
+  securityContext:
+    runAsNonRoot: false
+
+# ------------------------------------------------------------------------------
+# In-Cluster Redis Cache (Optional — disabled if using external Redis)
+# ------------------------------------------------------------------------------
+redis:
+  enabled: true
+  image:
+    repository: redis
+    tag: "7.2-alpine"
+    pullPolicy: IfNotPresent
+
+  service:
+    type: ClusterIP
+    port: 6379
+
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "300m"
+      memory: "256Mi"
+
+# ------------------------------------------------------------------------------
+# In-Cluster MongoDB StatefulSet (Optional — disabled when using MongoDB Atlas)
+# ------------------------------------------------------------------------------
+mongodb:
+  enabled: false # set true to spin up local MongoDB instead of cloud Atlas
+  image:
+    repository: mongo
+    tag: "7.0-jammy"
+    pullPolicy: IfNotPresent
+
+  service:
+    type: ClusterIP
+    port: 27017
+
+  resources:
+    requests:
+      cpu: "250m"
+      memory: "512Mi"
+    limits:
+      cpu: "500m"
+      memory: "1Gi"
+
+  persistence:
+    enabled: true
+    size: 10Gi
+    accessModes:
+      - ReadWriteOnce
+
+# ------------------------------------------------------------------------------
+# Unified Ingress (AWS ALB or Nginx Ingress Controller)
+# ------------------------------------------------------------------------------
+ingress:
+  enabled: true
+  className: "alb" # or "nginx"
+
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/healthcheck-path: /healthz
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+
+  hosts:
+    - host: teyvat-takeout.example.com
+      paths:
+        - path: /api
+          pathType: Prefix
+          service: backend
+        - path: /images
+          pathType: Prefix
+          service: backend
+        - path: /admin
+          pathType: Prefix
+          service: admin
+        - path: /
+          pathType: Prefix
+          service: frontend
+
+  tls: []
+  # - secretName: teyvat-takeout-tls
+  #   hosts:
+  #     - teyvat-takeout.example.com
+
+# ------------------------------------------------------------------------------
+# Prometheus Monitoring (ServiceMonitor for Prometheus Operator)
+# ------------------------------------------------------------------------------
+serviceMonitor:
+  enabled: true
+  interval: 15s
+  scrapeTimeout: 10s
+  labels:
+    release: prometheus
